@@ -1,8 +1,9 @@
 # Code corresponding to chapter 2
 using Base.Test
+using Distributions
 
 # Insertion sort (page 18)
-function insertionsort!(a::Array{Real,1})
+function insertionsort!(a)
 	# Because this function changes the array, create a copy
 	for j=2:length(a)
 		key = a[j]
@@ -15,22 +16,25 @@ function insertionsort!(a::Array{Real,1})
 	end
 	return(a)
 end
-
 @test insertionsort!([3,2,1]) == [1,2,3]
 
 # Merge (page 31)
-function merge!(a::Array{Real,1}, p::Int64, q::Int64, r::Int64)
+function merge!(a, p::Int64, q::Int64, r::Int64)
 	n1 = q - p + 1
 	n2 = r - q
-	l = zeros(Int64, n1 + 1)
+	l = zeros(typeof(a[1]), n1 + 1)
 	# Renamed L to m to fit Julia style
-	m = zeros(Int64, n2 + 1)
+	m = zeros(typeof(a[1]), n2 + 1)
 	for i = 1:n1
 		l[i] = a[p + i - 1]
 	end
 	for j = 1:n2
 		m[j] = a[q+j]
 	end
+	# The algorithms prescribes using infinity as the last value
+	# and the closest value I have is the typemax. Need to check
+	# whether this is still correct if the value equals the 
+	# typemax.
 	type_ = typeof(l[1])
 	l[n1 + 1] = typemax(type_)
 	m[n2 + 1] = typemax(type_)
@@ -57,7 +61,7 @@ r = 6
 
 # Merge-sort (p.34)
 # Changes p and r to from and to for readability
-function mergesort!(a::Array{Real,1}, from=1::Int64, to=length(a)::Int64)
+function mergesort!(a, from=1::Int64, to=length(a)::Int64)
 	if from < to
 		middle = int(floor((from + to) / 2))
 		mergesort!(a, from, middle)
@@ -69,5 +73,3 @@ end
 
 a = [3,4,1]
 @test mergesort!(a) == [1,3,4]
-
-
