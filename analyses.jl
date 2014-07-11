@@ -22,8 +22,8 @@ function random_array(size::Int64)
 end
 
 # Comparing the speed of different sorting functions.
-sorters = [sort!, insertionsort!, mergesort!, heapsort!]
-obs = [1000, 10000]
+sorters = [sort!, insertionsort!, mergesort!, heapsort!, quicksort!]
+obs = [1000, 10000, 100000]
 sorter = sorters[1]
 times = [sort_timer(sorter, size) for size=obs, sorter=sorters]
 times_relative = broadcast(/, times, times[:,1])[:, 2:end]
