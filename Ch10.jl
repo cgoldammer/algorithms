@@ -1,3 +1,5 @@
+using Base.Test
+
 # A stack operates like a set of trays in a cafeteria. You can put a plate on top (push) and you can take that plate
 # off (pop). Thus, it's a Last-In-First-Out (LIFO) data structure.
 
@@ -26,12 +28,12 @@ end
 
 # Testing that the stack works as expected.
 s = Stack()
-@assert stack_empty(s)
+@test stack_empty(s)
 push!(s, 1)
-@assert s.top == 1
+@test s.top == 1
 popped = pop!(s)
-@assert popped == 1
-@assert stack_empty(s)
+@test popped == 1
+@test stack_empty(s)
 
 # Checking that I'm providing a clean interface - just the three functions defined above.
 methodswith(Stack)
@@ -49,12 +51,12 @@ end
 
 function Queue(length)
   # Using curly brackets because we want the data to be of type Array{Any, 1}
-  data = {0 for i=1:length}
+  data = {None for i=1:length}
   q = Queue(length, 1, 1, data)
 end
 
 function enqueue!(q::Queue, x::Any)
-  if q.tail = q.head-1
+  if q.data[q.tail] != None
     error("Queue overflow")
   end
   q.data[q.tail] = x
@@ -66,10 +68,11 @@ function enqueue!(q::Queue, x::Any)
 end
 
 function dequeue!(q::Queue)
-  if q.head == q.tail
-    error("Queue underflow")
+  x = copy(q.data[q.head])
+  if x == None
+      error("Queue underflow")
   end
-  x = q.data[q.head]
+  q.data[q.head] = None
   if q.head == q.length
     q.head = 1
   else
@@ -80,16 +83,16 @@ end
 
 q = Queue(2)
 enqueue!(q, 1)
-@assert dequeue!(q) == 1
+@test dequeue!(q) == 1
 enqueue!(q, 2)
-@assert dequeue!(q) == 2
+@test dequeue!(q) == 2
 enqueue!(q, 3)
 enqueue!(q, 4)
-@assert dequeue!(q) == 3
+@test dequeue!(q) == 3
 
+# Testing the boundary conditions
 q = Queue(1)
-@test_throws ErrorException dequeue!(q)
+@test_throws ErrorException  dequeue!(q)
 enqueue!(q, 1)
 @test_throws ErrorException enqueue!(q, 1)
-
 
