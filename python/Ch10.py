@@ -102,6 +102,35 @@ class TestExceptionQueue(TestCase):
         with self.assertRaises(Exception):
             q.enqueue(3)
 
+# Implement a deque. No bounds checking
+class Deque(Queue):
+    def previous(self, i):
+        return (i-1) % len(self)
+    def add_end(self, x):
+        return super(Deque, self).enqueue(x)
+    def pop_start(self):
+        return super(Deque, self).dequeue()
+    def add_start(self, x):
+        self.head = self.previous(self.head)
+        self.vals[self.head] = x
+    def pop_end(self):
+        self.tail = self.previous(self.tail)
+        return self.vals[self.tail]
+
+class TestDeque(TestCase):
+    def test_deque(self):
+        q = Deque(2)
+        q.add_start(1)
+        x = q.pop_start()
+        self.assertEquals(x, 1)
+        q.add_end(2)
+        q.add_start(1)
+        x = q.pop_end()
+        self.assertEquals(x, 2)
+        x = q.pop_start()
+        self.assertEquals(x, 1)
+
+
 if __name__ == "__main__":
     unittest.main()
 
