@@ -130,6 +130,61 @@ class TestDeque(TestCase):
         x = q.pop_start()
         self.assertEquals(x, 1)
 
+class Node(object):
+    next = None
+    prev = None
+    def __init__(self, x):
+        self.key = x
+
+class LinkedList(object):
+    head = None
+
+    def to_list(self):
+        keys = []
+        x = self.head
+        while x:
+            keys.append(x.key)
+            x = x.next
+        return keys
+
+    def find(self, k):
+        x = self.head
+        while x and x.key != k:
+            x = x.next
+        return x
+
+    def insert(self, x):
+        x.next = self.head
+        if self.head:
+            self.head.prev = x
+        self.head = x
+        x.prev = None
+
+    def delete(self, x):
+
+        if x.prev:
+            x.prev.next = x.next
+        else:
+            self.head = x.next
+        if x.next:
+            x.next.prev = x.prev
+
+class TestLinkedList(TestCase):
+    def test_list(self):
+        l = LinkedList()
+        l.insert(Node(0))
+        l.insert(Node(1))
+        l.insert(Node(2))
+        self.assertEqual(l.to_list(), [2, 1, 0])
+
+        latest = Node(3)
+        l.insert(latest)
+
+        find = l.find(3)
+        self.assertEqual(latest, find)
+
+        l.delete(l.find(2))
+        self.assertEqual(l.to_list(), [3, 1, 0])
 
 if __name__ == "__main__":
     unittest.main()
