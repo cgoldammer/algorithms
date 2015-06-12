@@ -120,3 +120,17 @@ function dequeue!(q::StackQueue)
   end
   head
 end
+
+type SingleList
+  next
+  key
+end
+
+SingleList() = SingleList(Any[], Any[])
+
+
+
+
+function list_search(l::SingleList)
+  x =
+
