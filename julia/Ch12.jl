@@ -3,17 +3,15 @@ import Base.Test
 
 node = Ch12.NewNode()
 t = Ch12.Tree()
-z = Ch12.Node(0)
-Ch12.tree_insert(t, z) 
-@assert t.root == z
-Ch12.inorder_tree_walk(z)
-z.empty
-z.left
-z.empty
-t.root.empty
 
-Ch12.tree_insert(t, Ch12.Node(5))
-Ch12.tree_insert(t, Ch12.Node(7))
-Ch12.tree_insert(t, Ch12.Node(1))
+keys = [5, 7, 1, 4, 6]
+nodes = {k => Ch12.Node(k) for k in keys}
 
-@assert Ch12.inorder_tree_walk(z) == [0, 1, 5, 7]
+for key in keys
+    Ch12.tree_insert(t, nodes[key])
+end
+
+@assert t.root.key == nodes[keys[1]].key
+
+@assert Ch12.inorder_tree_walk(z) == keys
+@assert Ch12.tree_successor(nodes[1]) == nodes[5]
