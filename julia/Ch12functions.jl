@@ -1,9 +1,9 @@
 module Ch12
 type Node
     empty::Bool
-    p::Node
-    left::Node
-    right::Node
+    p
+    left
+    right
     key::Int64
     Node() = (x = new(true);)
 end
@@ -16,10 +16,10 @@ NewNode = function()
 end
 Node(k) = (n = NewNode(); n.empty=false; n.key = k; n)
 type Tree
-    root::Node
+    root
 end
 Tree() = Tree(Node())
-tree_insert = function(t::Tree, z::Node)
+tree_insert = function(t::Tree, z)
     y = Node() 
     x = t.root
     if x.empty
@@ -41,7 +41,7 @@ tree_insert = function(t::Tree, z::Node)
         y.right = z
     end
 end   
-inorder_tree_walk = function(n::Node)
+inorder_tree_walk = function(n)
     keys = Int64[]
     if !n.empty
         append!(keys, inorder_tree_walk(n.left))
@@ -53,7 +53,7 @@ end
         
 
 # Ex 12.1-4. Post-order walk is analogous
-preorder_tree_walk = function(n::Node)
+preorder_tree_walk = function(n)
     keys = Int64[]
     if !n.empty
         push!(keys, n.key)
@@ -64,35 +64,34 @@ preorder_tree_walk = function(n::Node)
 end
 
 # Ex 12.2-2. Maximum is analogous
-tree_minimum_recursive = function(n::Node)
+tree_minimum_recursive = function(n)
     if !n.left.empty
         tree_minimum_recursive(n.left)
     end
     n.key
 end
 
-tree_minimum = function(n::Node)
-    while !x.left.empty
-        x = x.left
+tree_minimum = function(n)
+    while !n.left.empty
+        n = n.left
     end
-    return x
+    return n
 end 
 
-tree_maximum = function(n::Node)
-    while !x.right.empty
-        x = x.right
+tree_maximum = function(n)
+    while !n.right.empty
+        n = n.right
     end
-    x
+    n
 end
 
-
-tree_successor = function(x::Node)
-  if !x.right.empty
-    return tree_minimum(x.right)
+tree_successor = function(n)
+  if !n.right.empty
+    return tree_minimum(n.right)
   end
-  y = x.p
-  while !y.empty && x == y.right
-      x = y
+  y = n.p
+  while !y.empty && n == y.right
+      n = y
       y = y.p
   end
   y

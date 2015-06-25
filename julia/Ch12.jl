@@ -13,5 +13,8 @@ end
 
 @assert t.root.key == nodes[keys[1]].key
 
-@assert Ch12.inorder_tree_walk(z) == keys
-@assert Ch12.tree_successor(nodes[1]) == nodes[5]
+@assert Ch12.inorder_tree_walk(t.root) == sort(keys)
+@assert Ch12.tree_successor(nodes[1]).key == 4
+@assert Ch12.tree_successor(nodes[5]).key == 6 
+
+
