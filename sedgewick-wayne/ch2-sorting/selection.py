@@ -12,5 +12,3 @@ def sort(a):
         exch(a, i, min)
 
 report(sort)
-                
-
