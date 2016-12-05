@@ -21,22 +21,25 @@ class Queue(object):
     tail = 0
 
     def __len__(self):
-        return self.len
+        return self.length
 
     def __init__(self, n):
-        self.len = n
+        self.max_length = n
+        self.length = 0
         self.vals = range(n)
 
     def next(self, i):
-        return (i+1) % len(self)
+        return (i+1) % self.max_length
 
     def enqueue(self, x):
         self.vals[self.tail] = x
         self.tail = self.next(self.tail)
+        self.length += 1
 
     def dequeue(self):
         x = self.vals[self.head]
         self.head = self.next(self.head)
+        self.length -= 1
         return x
 
 # Ex 10.1-4: Rewrite ENQUEUE and DEQUEUE to detect underflow and overflow of a queue.
